@@ -1,9 +1,8 @@
 CACHE MANIFEST
-plan.html
-index.html
+CACHE:
 javascript/plan.js
 javascript/xmlutil.js
 
-NETWORK
+NETWORK:
 saveplan
 fetchplan
