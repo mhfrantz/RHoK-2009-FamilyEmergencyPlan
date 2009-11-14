@@ -1,0 +1,9 @@
+CACHE MANIFEST
+plan.html
+index.html
+javascript/plan.js
+javascript/xmlutil.js
+
+NETWORK
+saveplan
+fetchplan

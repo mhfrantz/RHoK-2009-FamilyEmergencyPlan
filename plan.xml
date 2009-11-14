@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plan>
+  <user_email>{{current_user.email|escape}}</user_email>
+  <user_name>{{current_user.nickname|escape}}</user_name>
+  <out_of_town_contact>{{plan.out_of_town_contact|escape}}</out_of_town_contact>
+  <neighborhood_meeting_place>{{plan.neighborhood_meeting_place|escape}}</neighborhood_meeting_place>
+  <regional_meeting_place>{{plan.regional_meeting_place|escape}}</regional_meeting_place>
+  <evacuation_location>{{plan.evacuation_location|escape}}</evacuation_location>
+  {% for family_member in plan.family_members %}
+    <family_member>{{family_member|escape}}</family_member>
+  {% endfor %}
+</plan>

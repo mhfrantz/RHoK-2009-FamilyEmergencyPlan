@@ -4,7 +4,29 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /cache-manifest
+  static_files: cache-manifest
+  mime_type: text/cache-manifest
+  upload: cache-manifest
+  
+- url: /index.html
+  static_files: index.html
+  upload: index.html
+  login: required
+
+- url: /javascript
+  static_dir: javascript
+  login: required
+
 - url: /
+  script: rhok1.py
+  login: required
+
+- url: /plan.html
+  script: rhok1.py
+  login: required
+
+- url: /fetchplan
   script: rhok1.py
   login: required
 

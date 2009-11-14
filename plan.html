@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE HTML>
+<html manifest="cache-manifest">
   <head>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
       <title>Family Emergency Plan for {{current_user.nickname}}</title>
@@ -7,8 +8,21 @@
     <h1>Family Emergency Plan for {{current_user.nickname}}</h1>
     <div>({{current_user.email}})</div>
     <form action="/saveplan" method="post">
-    <div>Where to meet: <input type="text" name="where_to_meet"
-        value="{{plan.where_to_meet|escape}}">
+    <div>Out-of-town contact: <input type="text" 
+        name="out_of_town_contact"
+        value="{{plan.out_of_town_contact|escape}}">
+    </div>
+    <div>Neighborhood meeting place: <input type="text"
+        name="neighborhood_meeting_place"
+        value="{{plan.neighborhood_meeting_place|escape}}">
+    </div>
+    <div>Regional meeting place: <input type="text"
+        name="regional_meeting_place"
+        value="{{plan.regional_meeting_place|escape}}">
+    </div>
+    <div>Evacuation location: <input type="text"
+        name="evacuation_location"
+        value="{{plan.evacuation_location|escape}}">
     </div>
     <div>Family members:
       {% for family_member in family_members_emails %}
@@ -18,7 +32,7 @@
         </div>
       {% endfor %}
     </div>
-    <input type="submit" value="Save">
+    <input type="submit" method="post" value="Save">
     <div>Last updated: {{plan.last_updated}}</div>
     </form>
     <div><a href="{{logout_url}}">Logout</a></div>

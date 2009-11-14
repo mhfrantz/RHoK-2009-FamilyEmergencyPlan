@@ -4,6 +4,7 @@
 __author__ = 'matthewf@google.com (Matt Frantz)'
 
 import datetime
+import logging
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -17,7 +18,10 @@ MAX_FAMILY_MEMBERS = 20
 
 
 class Plan(db.Model):
-  where_to_meet = db.TextProperty()
+  out_of_town_contact = db.TextProperty()
+  neighborhood_meeting_place = db.TextProperty()
+  regional_meeting_place = db.TextProperty()
+  evacuation_location = db.TextProperty()
   last_updated = db.DateTimeProperty()
   family_members = db.ListProperty(users.User)
 
@@ -48,13 +52,13 @@ def FetchPlan():
   db.run_in_transaction(FetchPlanUnsafe)
 
 
-def SavePlanUnsafe(where_to_meet, family_members):
+def SavePlanUnsafe(request, family_members):
   """Saves the family plan.
   
   This runs in a transaction in SavePlan.
 
   Args:
-    where_to_meet: Where to meet (str)
+    request: Web form request object (?)
     family_members: List of email addresses of family members (list of str)
     
   Returns:
@@ -67,10 +71,16 @@ def SavePlanUnsafe(where_to_meet, family_members):
     if HasADifferentPlan(family_member, plan.key()):
       already_has_a_plan.append(family_member)
 
-  if not already_has_a_plan:
-    plan.where_to_meet = where_to_meet
+  if already_has_a_plan:
+    logging.error('Already has a plan: %s', users.get_current_user())
+  else:
+    plan.out_of_town_contact = request.get('out_of_town_contact')
+    plan.neighborhood_meeting_place = request.get('neighborhood_meeting_place')
+    plan.regional_meeting_place = request.get('regional_meeting_place')
+    plan.evacuation_location = request.get('evacuation_location')
     plan.family_members = [users.User(x) for x in family_members]
     plan.last_updated = datetime.datetime.now()
+    logging.debug('Save plan: %s', plan.out_of_town_contact)
     plan.put()
 
   return already_has_a_plan
@@ -80,7 +90,7 @@ def SavePlan(where_to_meet, family_members):
   """Saves the family plan.
   """
   return db.run_in_transaction(
-      SavePlanUnsafe, where_to_meet, family_members)
+      SavePlanUnsafe, request, family_members)
 
 
 class SavePlanHandler(webapp.RequestHandler):
@@ -91,8 +101,7 @@ class SavePlanHandler(webapp.RequestHandler):
       if family_member:
         family_members.append(family_member)
     
-    where_to_meet = self.request.get('where_to_meet')
-    already_has_a_plan = SavePlanUnsafe(where_to_meet, family_members)
+    already_has_a_plan = SavePlanUnsafe(self.request, family_members)
     
     if already_has_a_plan:
       webapp_util.WriteTemplate(self.response, 'already_has_a_plan.html', locals())
@@ -116,7 +125,17 @@ class MainPage(webapp.RequestHandler):
     webapp_util.WriteTemplate(self.response, 'plan.html', locals())
 
 
+class FetchPlanHandler(webapp.RequestHandler):
+  def get(self):
+    logging.info('Fetch plan for user %s', users.get_current_user().email())
+    plan = FetchPlanUnsafe()
+    webapp_util.WriteTemplate(self.response, 'plan.xml', locals())
+    self.response.headers["Content-Type"] = "text/xml"
+
+
 application = webapp.WSGIApplication([('/', MainPage),
+                                      ('/plan.html', MainPage),
+                                      ('/fetchplan', FetchPlanHandler),
                                       ('/saveplan', SavePlanHandler),
                                       ],
                                      debug=True)

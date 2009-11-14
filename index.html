@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+      <title>Family Emergency Plan</title>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script> 
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script> 
+      <script type="text/javascript" src="javascript/xmlutil.js"></script>
+      <script type="text/javascript" src="javascript/plan.js"></script>
+  </head>
+  <body onload="plan_init()">
+    <h1>Family Emergency Plan</h1>
+    <span id="user_name"></span> (<span id="user_email"></span>)
+    <form action="/saveplan" method="post">
+    <div>Out-of-town contact: <input type="text" 
+        name="out_of_town_contact">
+    </div>
+    <div>Neighborhood meeting place: <input type="text"
+        name="neighborhood_meeting_place">
+    </div>
+    <div>Regional meeting place: <input type="text"
+        name="regional_meeting_place">
+    </div>
+    <div>Evacuation location: <input type="text"
+        name="evacuation_location">
+    </div>
+    <div id="family_members">Family members:</div>
+    <input type="submit" value="Save">
+    <div>Last updated: <span id="last_updated"></span></div>
+    </form>
+    <div><a href="/logout">Logout</a></div>
+  </body>
+</html>
