@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+      <title>Family Emergency Plan Error {{current_user.nickname}}</title>
+  </head>
+  <body>
+    <h1>Family Emergency Plan Error {{current_user.nickname}}</h1>
+    There is already a Family Emergency Plan for:
+    <ul>
+      {% for user in already_has_a_plan %}
+        <li>{{user.email|escape}}</li>
+      {% endfor %}
+    </ul>
+    <div><a href="/">Plan</a></div>
+  </body>
+</html>

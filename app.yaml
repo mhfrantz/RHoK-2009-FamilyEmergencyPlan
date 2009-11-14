@@ -1,0 +1,13 @@
+application: rhok-1
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /
+  script: rhok1.py
+  login: required
+
+- url: /saveplan
+  script: rhok1.py
+  login: required
