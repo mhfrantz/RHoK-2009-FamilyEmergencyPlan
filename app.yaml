@@ -8,6 +8,11 @@ handlers:
   static_files: cache-manifest
   mime_type: text/cache-manifest
   upload: cache-manifest
+
+- url: /plan-cache-manifest
+  static_files: plan-cache-manifest
+  mime_type: text/cache-manifest
+  upload: plan-cache-manifest
   
 - url: /index.html
   static_files: index.html
@@ -19,10 +24,6 @@ handlers:
   login: required
 
 - url: /
-  script: rhok1.py
-  login: required
-
-- url: /plan.html
   script: rhok1.py
   login: required
 
